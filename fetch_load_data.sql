@@ -52,13 +52,13 @@ CREATE OR REPLACE TABLE akas AS
       }
     )
   )
-  SELECT titleId
+  SELECT titleId AS tconst  -- Rename or it's the only title ID column not named `tconst`
     , ordering
     , title
     , region
     , language
-    , split(types, ',') AS types
-    , split(attributes, ',') AS attributes
+    , split(types, chr(2)) AS types  -- Weird ASCII 0x02 separator!
+    , split(attributes, chr(2)) AS attributes
     , isOriginalTitle
   FROM parse;
 
