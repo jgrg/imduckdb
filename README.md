@@ -27,3 +27,32 @@ You can now explore the data in a web browser:
 duckdb -ui imduckdb.duckdb
 ```
 
+The desired query output from the blog post is:
+
+```json
+{
+  "title": "Baby Driver",
+  "director": ["Edgar Wright"],
+  "writer": ["Edgar Wright"]
+  "genres": ["Action", "Crime", "Drama"],
+  "actors": [
+    {"name": "Ansel Elgort", "characters": ["Baby"]},
+    {"name": "Jon Bernthal", "characters": ["Griff"]},
+    {"name": "Jon Hamm", "characters": ["Buddy"]},
+    {"name": "Eiza González", "characters": ["Darling"]},
+    {"name": "Micah Howard", "characters": ["Barista"]},
+    {"name": "Lily James", "characters": ["Debora"]},
+    {"name": "Morgan Brown", "characters": ["Street Preacher"]},
+    {"name": "Kevin Spacey", "characters": ["Doc"]},
+    {"name": "Morse Diggs", "characters": ["Morse Diggs"]},
+    {"name": "CJ Jones", "characters": ["Joseph"]}
+  ],
+}
+```
+
+To generate this using DuckDB's `COPY TO ... (FORMAT JSON)` on the above
+database, run [`baby_driver.sql`](baby_driver.sql):
+
+```sh
+duckdb -f baby_driver.sql imduckdb.duckdb
+```
