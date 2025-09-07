@@ -1,6 +1,3 @@
-BEGIN TRANSACTION;
-
-
 -- name.basics.tsv.gz
 --   nconst (string) - alphanumeric unique identifier of the name/person
 --   primaryName (string)– name by which the person is most often credited
@@ -15,8 +12,8 @@ CREATE OR REPLACE TABLE person AS
       'https://datasets.imdbws.com/name.basics.tsv.gz',
       nullstr='\N',
       types = {
-        'birthYear': 'INT16',
-        'deathYear': 'INT16',
+        'birthYear': 'SMALLINT',
+        'deathYear': 'SMALLINT',
       }
     )
   )
@@ -42,7 +39,7 @@ CREATE OR REPLACE TABLE person AS
 --   attributes (array) - Additional terms to describe this alternative title, not enumerated
 --   isOriginalTitle (boolean) – 0: not original title; 1: original title
 
-CREATE OR REPLACE TABLE akas AS
+CREATE OR REPLACE TABLE aka AS
   WITH parse AS (
     FROM read_csv(
       'https://datasets.imdbws.com/title.akas.tsv.gz',
@@ -57,7 +54,8 @@ CREATE OR REPLACE TABLE akas AS
     , title
     , region
     , language
-    , split(types, chr(2)) AS types  -- Weird ASCII 0x02 separator!
+    -- Split on the weird ASCII 0x02 separator for the types and attirbutes columns!
+    , split(types, chr(2)) AS types
     , split(attributes, chr(2)) AS attributes
     , isOriginalTitle
   FROM parse;
@@ -74,16 +72,16 @@ CREATE OR REPLACE TABLE akas AS
 --   runtimeMinutes – primary runtime of the title, in minutes
 --   genres (string array) – includes up to three genres associated with the title
 
-CREATE OR REPLACE TABLE basics AS
+CREATE OR REPLACE TABLE title AS
   WITH parse AS (
     FROM read_csv(
       'https://datasets.imdbws.com/title.basics.tsv.gz',
       nullstr = '\N',
       types = {
         'isAdult': 'BOOLEAN',
-        'startYear': 'INT16',
-        'endYear': 'INT16',
-        'runtimeMinutes': 'INT32',
+        'startYear': 'SMALLINT',
+        'endYear': 'SMALLINT',
+        'runtimeMinutes': 'INT',
       }
     )
   )
@@ -128,8 +126,8 @@ CREATE OR REPLACE TABLE episode AS
     'https://datasets.imdbws.com/title.episode.tsv.gz',
     nullstr = '\N',
     types = {
-      'seasonNumber': 'INT16',
-      'episodeNumber': 'INT32',
+      'seasonNumber': 'SMALLINT',
+      'episodeNumber': 'INT',
     }
   );
 
@@ -142,14 +140,24 @@ CREATE OR REPLACE TABLE episode AS
 --   job (string) - the specific job title if applicable, else '\N'
 --   characters (string) - the name of the character played if applicable, else '\N'
 
-CREATE OR REPLACE TABLE principals AS
-  FROM read_csv(
-    'https://datasets.imdbws.com/title.principals.tsv.gz',
-    nullstr = '\N',
-    types = {
-      'ordering': 'INT32',
-    }
-  );
+CREATE OR REPLACE TABLE principal AS
+  WITH parse AS (
+    FROM read_csv(
+      'https://datasets.imdbws.com/title.principals.tsv.gz',
+      nullstr = '\N',
+      types = {
+        'ordering': 'TINYINT',
+      }
+    )
+  )
+  SELECT tconst
+    , ordering
+    , nconst
+    , category
+    , job
+    -- The characters column is actually an array in JSON format, so we cast it to varchar[]
+    , characters::JSON::VARCHAR[] AS characters
+  FROM parse;
 
 
 -- title.ratings.tsv.gz
@@ -157,15 +165,12 @@ CREATE OR REPLACE TABLE principals AS
 --   averageRating – weighted average of all the individual user ratings
 --   numVotes - number of votes the title has received
 
-CREATE OR REPLACE TABLE ratings AS
+CREATE OR REPLACE TABLE rating AS
   FROM read_csv(
     'https://datasets.imdbws.com/title.ratings.tsv.gz',
     nullstr = '\N',
     types = {
       'averageRating': 'FLOAT',
-      'numVotes': 'INT32',
+      'numVotes': 'INT',
     }
   );
-
-
-COMMIT;
