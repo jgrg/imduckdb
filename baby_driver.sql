@@ -1,3 +1,12 @@
+-- CTEs (common table expressions) avoid nesting, flattening the sturcture of
+-- the query and making it more readable.
+
+-- When the column name is the same on both sides of the join, joining by
+-- `USING (colname)` is cleaner.
+
+-- No `table.colname` qualifiers are required because there are no (to DuckDB)
+-- ambiguous columns in the SELECT clauses.
+
 COPY (
   WITH directors AS (
     SELECT tconst
@@ -34,10 +43,10 @@ COPY (
     GROUP BY tconst
   )
   SELECT primaryTitle AS title
-   , director
-   , genres
-   , writer
-   , actors
+    , director
+    , genres
+    , writer
+    , actors
   FROM title
   LEFT JOIN directors USING (tconst)
   LEFT JOIN writers USING (tconst)
