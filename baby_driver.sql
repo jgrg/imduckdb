@@ -1,4 +1,4 @@
--- CTEs (common table expressions) avoid nesting, flattening the sturcture of
+-- CTEs (common table expressions) avoid nesting, flattening the structure of
 -- the query and making it more readable.
 
 -- When the column name is the same on both sides of the join, joining by
