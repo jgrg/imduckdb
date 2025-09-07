@@ -43,4 +43,4 @@ COPY (
   LEFT JOIN writers USING (tconst)
   LEFT JOIN actor_characters USING (tconst)
   WHERE tconst = 'tt3890160'
-) TO '/dev/stdout' (FORMAT JSON, ARRAY true);
+) TO '/dev/stdout' (FORMAT JSON);
