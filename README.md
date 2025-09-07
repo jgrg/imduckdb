@@ -8,10 +8,10 @@ Created after reading Jamie Brandon's blog post
 I thought the example SQL could be nicer.
 
 First, I needed a database to run the SQL on. The blog post uses PostgreSQL,
-but my favourite thing is [DuckDB](https://duckdb.org). Using DuckDB I could
-download and build the tables using DuckDB's SQL alone. To do this
-(having istalled the DuckDB CLI)
-run [`fetch_load_data.sql`](fetch_load_data.sql):
+but I'm always looking for an excuse to throw [DuckDB](https://duckdb.org) at
+something new. Using DuckDB I could download and build the tables using
+its SQL alone. To do this (having istalled the DuckDB CLI) run
+[`fetch_load_data.sql`](fetch_load_data.sql):
 
 ```sh
 duckdb -echo -f fetch_load_data.sql imduckdb.duckdb
