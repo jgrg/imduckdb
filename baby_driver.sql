@@ -22,12 +22,12 @@ COPY (
   actor_characters AS (
     SELECT tconst
       , array_agg(
-       {
-        'name': primaryName,
-        'characters': characters,
-       }
-       ORDER BY ordering
-     ) AS actors
+          {
+           'name': primaryName,
+           'characters': characters,
+          }
+          ORDER BY ordering
+        ) AS actors
     FROM principal
     JOIN person USING (nconst)
     WHERE characters IS NOT NULL

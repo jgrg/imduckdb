@@ -6,7 +6,7 @@
 --   primaryProfession (array of strings)– the top-3 professions of the person
 --   knownForTitles (array of tconsts) – titles the person is known for
 
-CREATE OR REPLACE TABLE person AS
+CREATE TABLE person AS
   WITH parse AS (
     FROM read_csv(
       'https://datasets.imdbws.com/name.basics.tsv.gz',
@@ -39,7 +39,7 @@ CREATE OR REPLACE TABLE person AS
 --   attributes (array) - Additional terms to describe this alternative title, not enumerated
 --   isOriginalTitle (boolean) – 0: not original title; 1: original title
 
-CREATE OR REPLACE TABLE aka AS
+CREATE TABLE aka AS
   WITH parse AS (
     FROM read_csv(
       'https://datasets.imdbws.com/title.akas.tsv.gz',
@@ -72,7 +72,7 @@ CREATE OR REPLACE TABLE aka AS
 --   runtimeMinutes – primary runtime of the title, in minutes
 --   genres (string array) – includes up to three genres associated with the title
 
-CREATE OR REPLACE TABLE title AS
+CREATE TABLE title AS
   WITH parse AS (
     FROM read_csv(
       'https://datasets.imdbws.com/title.basics.tsv.gz',
@@ -102,7 +102,7 @@ CREATE OR REPLACE TABLE title AS
 --   directors (array of nconsts) - director(s) of the given title
 --   writers (array of nconsts) – writer(s) of the given title
 
-CREATE OR REPLACE TABLE crew AS
+CREATE TABLE crew AS
   WITH parse AS (
     FROM read_csv(
       'https://datasets.imdbws.com/title.crew.tsv.gz',
@@ -121,7 +121,7 @@ CREATE OR REPLACE TABLE crew AS
 --   seasonNumber (integer) – season number the episode belongs to
 --   episodeNumber (integer) – episode number of the tconst in the TV series
 
-CREATE OR REPLACE TABLE episode AS
+CREATE TABLE episode AS
   FROM read_csv(
     'https://datasets.imdbws.com/title.episode.tsv.gz',
     nullstr = '\N',
@@ -140,7 +140,7 @@ CREATE OR REPLACE TABLE episode AS
 --   job (string) - the specific job title if applicable, else '\N'
 --   characters (string) - the name of the character played if applicable, else '\N'
 
-CREATE OR REPLACE TABLE principal AS
+CREATE TABLE principal AS
   WITH parse AS (
     FROM read_csv(
       'https://datasets.imdbws.com/title.principals.tsv.gz',
@@ -165,7 +165,7 @@ CREATE OR REPLACE TABLE principal AS
 --   averageRating – weighted average of all the individual user ratings
 --   numVotes - number of votes the title has received
 
-CREATE OR REPLACE TABLE rating AS
+CREATE TABLE rating AS
   FROM read_csv(
     'https://datasets.imdbws.com/title.ratings.tsv.gz',
     nullstr = '\N',
