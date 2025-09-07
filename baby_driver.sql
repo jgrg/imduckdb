@@ -39,8 +39,8 @@ COPY (
    , writer
    , actors
   FROM title
-  JOIN directors USING (tconst)
-  JOIN writers USING (tconst)
-  JOIN actor_characters USING (tconst)
+  LEFT JOIN directors USING (tconst)
+  LEFT JOIN writers USING (tconst)
+  LEFT JOIN actor_characters USING (tconst)
   WHERE tconst = 'tt3890160'
 ) TO '/dev/stdout' (FORMAT JSON, ARRAY true);
